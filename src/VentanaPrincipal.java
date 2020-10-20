@@ -1,10 +1,13 @@
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import static jdk.nashorn.internal.objects.ArrayBufferView.buffer;
 
 /*
@@ -12,7 +15,6 @@ import static jdk.nashorn.internal.objects.ArrayBufferView.buffer;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author rioja
@@ -24,7 +26,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
-        jFileChooser1.setVisible(false);
+        jFileChooserGuardar.setVisible(false);
     }
 
     /**
@@ -37,12 +39,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         ventanaGuardado = new javax.swing.JDialog();
-        jFileChooser1 = new javax.swing.JFileChooser();
+        jFileChooserGuardar = new javax.swing.JFileChooser();
+        ventanaCargar = new javax.swing.JDialog();
+        jFileChooserCargar = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menuGuardar = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         ventanaGuardado.setAlwaysOnTop(true);
@@ -54,11 +60,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaGuardado.getContentPane().setLayout(ventanaGuardadoLayout);
         ventanaGuardadoLayout.setHorizontalGroup(
             ventanaGuardadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jFileChooserGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         ventanaGuardadoLayout.setVerticalGroup(
             ventanaGuardadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jFileChooserGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+
+        ventanaCargar.setSize(new java.awt.Dimension(600, 400));
+
+        javax.swing.GroupLayout ventanaCargarLayout = new javax.swing.GroupLayout(ventanaCargar.getContentPane());
+        ventanaCargar.getContentPane().setLayout(ventanaCargarLayout);
+        ventanaCargarLayout.setHorizontalGroup(
+            ventanaCargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jFileChooserCargar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        ventanaCargarLayout.setVerticalGroup(
+            ventanaCargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jFileChooserCargar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -74,8 +93,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        menuGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        menuGuardar.setText("Guardar");
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Guardar");
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem1MousePressed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        menuGuardar.setText("Guardar como");
         menuGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 menuGuardarMousePressed(evt);
@@ -87,6 +114,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(menuGuardar);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Cargar");
+        jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenuItem2MousePressed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -108,19 +144,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     //Este menú se va a encargar de que al presionar dicho botón o su shorcut guarde lo escrito en el text area.
     private void menuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGuardarActionPerformed
-        
+
     }//GEN-LAST:event_menuGuardarActionPerformed
 
     private void jMenu1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MousePressed
-       
+
     }//GEN-LAST:event_jMenu1MousePressed
 
     private void menuGuardarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGuardarMousePressed
-         guarda();
+        guardarComo();
     }//GEN-LAST:event_menuGuardarMousePressed
+
+    private void jMenuItem2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2MousePressed
+        cargar();
+    }//GEN-LAST:event_jMenuItem2MousePressed
+
+    private void jMenuItem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MousePressed
+        guardar();
+    }//GEN-LAST:event_jMenuItem1MousePressed
 
     /**
      * @param args the command line arguments
@@ -157,36 +201,61 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
     }
 
-    
-    private void guarda() {
+    private void guardarComo() {
         JFileChooser fc = new JFileChooser();
-        
+
         fc.showSaveDialog(this);
-        File f=fc.getSelectedFile();
-        
-        try{
-        FileWriter fw = new FileWriter(f);
-            
-        String text=jTextArea1.getText();
-        fw.write(text);
-        fw.close();
-        
-        }
-        catch(IOException e){
+        File f = fc.getSelectedFile();
+
+        try {
+            FileWriter fw = new FileWriter(f);
+
+            String text = jTextArea1.getText();
+            fw.write(text);
+            fw.close();
+
+        } catch (IOException e) {
             System.out.println(e);
-        }
-        catch(NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println(e);
         }
     }
+
+    private void cargar() {
+
+        JFileChooser jf = new JFileChooser();
+        jf.showOpenDialog(null);
+        File f = jf.getSelectedFile();
+        String filename = f.getAbsolutePath();
+
+        try {
+            FileReader fr = new FileReader(filename);
+            BufferedReader br = new BufferedReader(fr);
+            jTextArea1.read(br, null);
+            br.close();
+            jTextArea1.requestFocus();
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void guardar() {
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JFileChooser jFileChooserCargar;
+    private javax.swing.JFileChooser jFileChooserGuardar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenuItem menuGuardar;
+    private javax.swing.JDialog ventanaCargar;
     private javax.swing.JDialog ventanaGuardado;
     // End of variables declaration//GEN-END:variables
 }

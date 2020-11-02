@@ -26,7 +26,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
-        jFileChooserGuardar.setVisible(false);
+
     }
 
     /**
@@ -38,10 +38,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ventanaGuardado = new javax.swing.JDialog();
-        jFileChooserGuardar = new javax.swing.JFileChooser();
-        ventanaCargar = new javax.swing.JDialog();
-        jFileChooserCargar = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -49,35 +45,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         menuGuardar = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-
-        ventanaGuardado.setAlwaysOnTop(true);
-        ventanaGuardado.setMinimumSize(new java.awt.Dimension(600, 400));
-        ventanaGuardado.setPreferredSize(new java.awt.Dimension(600, 400));
-        ventanaGuardado.setSize(new java.awt.Dimension(600, 400));
-
-        javax.swing.GroupLayout ventanaGuardadoLayout = new javax.swing.GroupLayout(ventanaGuardado.getContentPane());
-        ventanaGuardado.getContentPane().setLayout(ventanaGuardadoLayout);
-        ventanaGuardadoLayout.setHorizontalGroup(
-            ventanaGuardadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooserGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-        );
-        ventanaGuardadoLayout.setVerticalGroup(
-            ventanaGuardadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooserGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-        );
-
-        ventanaCargar.setSize(new java.awt.Dimension(600, 400));
-
-        javax.swing.GroupLayout ventanaCargarLayout = new javax.swing.GroupLayout(ventanaCargar.getContentPane());
-        ventanaCargar.getContentPane().setLayout(ventanaCargarLayout);
-        ventanaCargarLayout.setHorizontalGroup(
-            ventanaCargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooserCargar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        ventanaCargarLayout.setVerticalGroup(
-            ventanaCargarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jFileChooserCargar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -196,16 +163,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void guardarComo() {
+        //Creamos un JFileChooser
         JFileChooser fc = new JFileChooser();
-
+        //Llamamos al JFileChooser para que se muestre mediante el dialog
         fc.showSaveDialog(this);
+        //Llamamos de nuevo al JFileChooser para usarlo con el FileWriter
         File f = fc.getSelectedFile();
 
         try {
+            //Declaramos el FileWriter y llamamos el File (f)
             FileWriter fw = new FileWriter(f);
-
+            //Obtenemos el texto escrito de nuestro TextArea
             String text = jTextArea1.getText();
+            //Escribimos el texto obtenido del TextArea
             fw.write(text);
+            //Cerramos la ejecución del FileWriter
             fw.close();
 
         } catch (IOException e) {
@@ -216,18 +188,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void cargar() {
-
+        //Creamos un JFileChooser
         JFileChooser jf = new JFileChooser();
+        //Llamamos al JFileChooser para que se muestre mediante el dialog
         jf.showOpenDialog(null);
+        //Llamamos de nuevo al JFileChooser para usarlo con el FileReader y el BufferedReader
         File f = jf.getSelectedFile();
+        //Obtenemos la ruta del archivo que queremos abrir
         String filename = f.getAbsolutePath();
 
         try {
+            //Con el FileReader leemos el archivo previamente seleccionado
             FileReader fr = new FileReader(filename);
+            //Con el BufferedReader obtenemos el texto del archivo
             BufferedReader br = new BufferedReader(fr);
+            //Actualizamos el contenido del jTextArea
             jTextArea1.read(br, null);
+            //Cerramos la ejecución
             br.close();
-            jTextArea1.requestFocus();
+            
         } catch (Exception e) {
 
             JOptionPane.showMessageDialog(null, e);
@@ -236,22 +215,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     private void guardar() {
-       String ruta = "C:\\Users\\Public\\Documents\\Document.txt";
-        
+        //Seleccionamos la ruta del guardado rápido
+        String ruta = "C:\\Users\\Public\\Documents\\Document.txt";
+
         try {
+            //Mediante el BufferedWriter editamos el archivo previamente seleccionado
             BufferedWriter bw = new BufferedWriter(new FileWriter(ruta));
+            //Modificamos el archivo poniendo el contenido del jTextArea
             bw.write(jTextArea1.getText());
+            //Cerramos la ejecución
             bw.close();
-            
-            
+
         } catch (Exception e) {
             System.out.println("Error en la escritura del fichero");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser jFileChooserCargar;
-    private javax.swing.JFileChooser jFileChooserGuardar;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -259,7 +239,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenuItem menuGuardar;
-    private javax.swing.JDialog ventanaCargar;
-    private javax.swing.JDialog ventanaGuardado;
     // End of variables declaration//GEN-END:variables
 }

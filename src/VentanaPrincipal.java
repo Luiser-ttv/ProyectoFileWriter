@@ -49,7 +49,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         menuGuardar = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         ventanaGuardado.setAlwaysOnTop(true);
         ventanaGuardado.setMinimumSize(new java.awt.Dimension(600, 400));
@@ -93,7 +92,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Guardar");
         jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -115,7 +113,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(menuGuardar);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Cargar");
         jMenuItem2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -125,9 +122,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -238,17 +232,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, e);
         }
+
     }
 
     private void guardar() {
+       String ruta = "C:\\Users\\Public\\Documents\\Document.txt";
         
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(ruta));
+            bw.write(jTextArea1.getText());
+            bw.close();
+            
+            
+        } catch (Exception e) {
+            System.out.println("Error en la escritura del fichero");
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser jFileChooserCargar;
     private javax.swing.JFileChooser jFileChooserGuardar;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
